@@ -1,3 +1,3 @@
-export interface Strategy {
-    changeStatus: (data: any) => void
-}
+// export interface Strategy {
+//     changeStatus: (data: any) => void
+// }

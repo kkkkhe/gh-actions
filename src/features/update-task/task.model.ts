@@ -25,25 +25,25 @@ export const updateTaskFactory = () => {
     fn: () => true,
     target: $isDirty
   })
-type Test = {
-  kv: any,
-  title: string,
-  id: number | null,
-  isAllowToSubmit: boolean
-}
-type Output = {
-  kv: any,
-  title: string,
-  id: number,
-  isAllowToSubmit: boolean
-}
-  sample({
-    clock: updateTaskTriggered,
-    source: {kv: $taskKv, title: $title, id: $activeId, isAllowToSubmit: $isAllowToSubmit},
-    filter: (props:Test): props is Output => Boolean(props.id) && props.isAllowToSubmit,
-    fn: ({kv, title, id}) => ({...kv[id], title}),
-    target: updateTaskFx
-  })
+// type Test = {
+//   kv: any,
+//   title: string,
+//   id: number | null,
+//   isAllowToSubmit: boolean
+// }
+// type Output = {
+//   kv: any,
+//   title: string,
+//   id: number,
+//   isAllowToSubmit: boolean
+// }
+  // sample({
+  //   clock: updateTaskTriggered,
+  //   source: {kv: $taskKv, title: $title, id: $activeId, isAllowToSubmit: $isAllowToSubmit},
+  //   filter: (props:Test): props is Output => Boolean(props.id) && props.isAllowToSubmit,
+  //   fn: ({kv, title, id}) => ({...kv[id], title}),
+  //   target: updateTaskFx
+  // })
   sample({
     clock: updateTaskTriggered,
     source: {id: $activeId, isAllowToSubmit: $isAllowToSubmit},
