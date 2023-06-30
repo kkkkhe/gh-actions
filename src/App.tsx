@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Fragment, PropsWithChildren } from "react"
+import { getTasksFx } from "./shared/api/get"
+import { $tasks, expandTaskModel, updateTaskModel } from "./model"
+import { useUnit } from "effector-react"
+import { Task } from "./shared/ui/task"
+import { UpdateTaskForm } from "./features/update-task/ui"
+
+
+getTasksFx()
 
 function App() {
-   const [count, setCount] = useState(0)
-
-   return (
-      <>
-         <div>
-            <a href="https://vitejs.dev" target="_blank">
-               <img src={viteLogo} className="logo" alt="Vite logo" />
-            </a>
-            <a href="https://react.dev" target="_blank">
-               <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
-         </div>
-         <h1>Vite + React</h1>
-         <div className="card">
-            <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-            </button>
-            <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
-         </div>
-         <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-         </p>
-      </>
-   )
+	const [
+		tasks,
+		updatedTask,
+		updateTaskTriggered,
+		createTaskTriggered
+	] = useUnit([
+		$tasks,
+		expandTaskModel.$updatedTask,
+		expandTaskModel.updateTaskTriggered,
+		expandTaskModel.createTaskTriggered
+	])
+	return (
+		<div className="h-screen bg-[#23242b] p-5 grid grid-rows-[1fr_50px]">
+			<div>
+				{tasks.map((item) => {
+					return (
+						<Fragment key={item.id}>
+							{updatedTask == item.id ?
+							<TaskWrapper>
+								<UpdateTaskForm model={updateTaskModel}/>
+							</TaskWrapper>	
+							: <Task task={item} onDoubleClick={() => updateTaskTriggered(item)}/>
+						}
+						</Fragment>
+					)
+				})}
+			</div>
+			<span>
+				<button onClick={() => createTaskTriggered()} className="text-[#07afc8] hover:bg-[#394a61] p-1 rounded-[5px]">
+					Create task
+				</button>
+			</span>
+		</div>
+	)
 }
+
+function TaskWrapper({children}: PropsWithChildren){
+	return (
+		<div className='p-2 bg-blue-400 text-white rounded-[5px]'>
+			{children}
+		</div>
+	)
+}
+
 
 export default App
